@@ -1,0 +1,119 @@
+			<div class="span9">
+				
+				<h1 class="page-title">
+					<i class="icon-th-large"></i>
+					帐号管理					
+				</h1>
+				
+				
+				<div class="row">
+					
+					<div class="span9">
+				
+						<div class="widget">
+									
+							<div class="widget-content">
+								
+								
+								
+								<div class="tabbable">
+						<ul class="nav nav-tabs">
+						  <li>
+						    <a href="#1" data-toggle="tab">个人信息</a>
+						  </li>
+						  <li class="active"><a href="#2" data-toggle="tab">修改密码</a></li>
+						</ul>
+						
+						<br />
+						
+							<div class="tab-content">
+								<div class="tab-pane" id="1">
+								<form id="edit-profile" class="form-horizontal" />
+									<fieldset>
+
+										<div class="control-group">											
+											<label class="control-label" for="username">用户名</label>
+											<div class="controls">
+												<input type="text" class="input-medium disabled" id="username" value=<%= user.username %> disabled="" />
+												<!-- <p class="help-block">一旦注册无法修改用户名。</p> -->
+											</div> <!-- /controls -->				
+										</div> <!-- /control-group -->
+										
+										<div class="control-group">											
+											<label class="control-label" for="password1">角色</label>
+											<div class="controls">
+												<input type="text" class="input-medium disabled" value=<%= user.power==1?'超级管理员':'管理员' %> disabled="" />
+											</div> <!-- /controls -->				
+										</div> <!-- /control-group -->
+										
+									</fieldset>
+								</form>
+								</div>
+								
+								<div class="tab-pane active" id="2">
+									<form id="edit-profile2" class="form-horizontal" action="/action/changePassword" method="post" />
+										<fieldset>
+											
+											<div class="control-group">
+												<label class="control-label" for="accountpassword">原密码</label>
+												<div class="controls">
+													<input type="password" class="input-large" name="old_password" />
+												</div>
+											</div>
+
+											<div class="control-group">
+												<label class="control-label" for="accountpassword">新密码</label>
+												<div class="controls">
+													<input type="password" class="input-large" name="new_password" />
+												</div>
+											</div>
+
+											<div class="control-group">
+												<label class="control-label" for="accountpassword">重复密码</label>
+												<div class="controls">
+													<input type="password" class="input-large" name="sec_new_password" />
+												</div>
+											</div>
+											<div class="control-group">		
+												<div class="controls" style="color: red;font-size: 12px;">									
+													<%= account_msg %>
+												</div>
+											</div> <!-- /control-group -->
+											<div class="form-actions" style="background: none;border: none">
+												<button type="submit" class="btn btn-primary">确定</button> <button class="btn">取消</button>
+											</div>
+										</fieldset>
+									</form>
+								</div>
+								
+							</div>
+						  
+						  
+						</div>
+								
+								
+								
+								
+								
+								
+								
+								
+							</div> <!-- /widget-content -->
+							
+						</div> <!-- /widget -->
+						
+					</div> <!-- /span9 -->
+					
+				</div> <!-- /row -->
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div> <!-- /span9 -->
+			
+

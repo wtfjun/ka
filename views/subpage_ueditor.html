@@ -1,0 +1,70 @@
+
+            <div class="span9">
+                
+                <h1 class="page-title">
+                    <!-- <i class="icon-th-large"></i> -->
+                    <span><%- subPage.title %></span> 页面  
+                    <span class="btn btn-default pull-right" style="margin-top: 3px" onclick="setContent()"> 重置原内容</span>             
+                </h1>
+                
+                
+                <div class="row">
+                    
+                    <div class="span9">
+                        <%= msg %>
+                        <!-- 加载编辑器的容器 -->  
+                        <script id="ue_container" style="height: 500px" name="content" type="text/plain">
+                        </script>  
+                        <!-- 配置文件 -->  
+                        <script type="text/javascript" src="/ueditor/ueditor.config.js"></script>  
+                        <!-- 编辑器源码文件 -->  
+                        <script type="text/javascript" src="/ueditor/ueditor.all.js"></script>  
+                        <!-- 实例化编辑器 -->  
+                        <script>  
+                            var ue = UE.getEditor('ue_container');
+                            
+                            setTimeout(function() {
+                                ue.setContent('<%- subPage.content %>')
+                             }, 500)
+                            function setContent() {
+                                ue.setContent('<%- subPage.content %>')
+                            }
+                            function getContent() {
+                                var current_page = $('.page-title>span').html()
+                                var content = ue.getContent()
+                               
+                                $.ajax({
+                                    url: '/action/updateSubPageContent',
+                                    type: 'post',
+                                    dataType: 'json',
+                                    data: {
+                                        current_page: current_page,
+                                        content: content
+                                    },
+                                })
+                                history.go(0)
+                            }  
+                        </script>  
+                        <div class="form-actions" style="text-align: center;">
+                            <button type="submit" onclick="getContent()" class="btn btn-primary">确定</button>
+                            <button class="btn btn-default">取消</button>
+                        </div>
+
+                        </div> <!-- /widget -->
+                        
+                    </div> <!-- /span9 -->
+                    
+                </div> <!-- /row -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </div> <!-- /span9 -->
+            
+
+
