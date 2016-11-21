@@ -180,25 +180,25 @@ exports.updateSubPageContent = function(req, res) {
 				return
 			})
 		}
-		// else {
-		// 	var subPage = new SubPage()
-		// 	subPage.title = current_page
-		// 	subPage.content = content
-		// 	subPage.save(function(err) {
-		// 		if(err) {
-		// 			return res.render('subpage_ueditor', {
-		// 				user: req.session.user? req.session.user : {username: ''},
-		// 				subPage: subPage,
-		// 				msg: '修改出错'
-		// 			})
-		// 		}
-		// 		res.render('subpage_ueditor', {
-		// 			user: req.session.user? req.session.user : {username: ''},
-		// 			subPage: subPage,
-		// 			msg: '修改成功'
-		// 		})
-		// 	})
-		// }
+		else {
+			var subPage = new SubPage()
+			subPage.title = current_page
+			subPage.content = content
+			subPage.save(function(err) {
+				if(err) {
+					return res.render('subpage_ueditor', {
+						user: req.session.user? req.session.user : {username: ''},
+						subPage: subPage,
+						msg: '修改出错'
+					})
+				}
+				res.render('subpage_ueditor', {
+					user: req.session.user? req.session.user : {username: ''},
+					subPage: subPage,
+					msg: '修改成功'
+				})
+			})
+		}
 	})
 }
 

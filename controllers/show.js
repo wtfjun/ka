@@ -70,6 +70,19 @@ exports.subpage_ueditor = function(req, res) {
 			})
 			return
 		}
+		else {
+			var subpage = new SubPage()
+			subpage.title = current_page
+			subpage.content = '1111111'
+			subpage.save(function(err) {
+				// if(err)
+				res.render('subpage_ueditor', {
+					user: req.session.user? req.session.user : {},
+					subPage: subpage,
+					msg: ''
+				})
+			})
+		}
 	})
 }
 
