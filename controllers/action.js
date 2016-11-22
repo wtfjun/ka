@@ -1,6 +1,8 @@
 var User = require('../models').User
 var SubPage = require('../models').SubPage
+var Project = require('../models').Project
 var crypto = require('crypto')
+var fs = require('fs')
 var common = require('./common.js')
 
 exports.signup = function(req, res) {
@@ -22,10 +24,10 @@ exports.signup = function(req, res) {
 	}
 	User.findOne({'username': username}).exec(function(err, user) {
 		if(err) {
-			res.render('signup', {
-				status: 'fail',
-				msg: '用户查找失败'
-			})
+			res.render('error', {
+		    err_msg: '查找用户失败'+err,
+		    user: {}
+		  });
 			return
 		}
 		if(Boolean(user)) {
@@ -45,10 +47,10 @@ exports.signup = function(req, res) {
 		new_user.password = md5Password
 		new_user.save(function(err) {
 			if(err) {
-				res.render('signup', {
-					status: 'fail',
-					msg: '保存新用户失败'
-				})
+				res.render('error', {
+			    err_msg: '保存新用户失败'+err,
+			    user: {}
+			  });
 				return
 			}
 			res.redirect('/login')
@@ -76,10 +78,10 @@ exports.login = function(req, res) {
 	}
 	User.findOne({'username': username}).exec(function(err, user) {
 		if(err) {
-			res.render('login', {
-				status: 'fail',
-				msg: '用户查找失败'
-			})
+			res.render('error', {
+		    err_msg: '查找用户失败'+err,
+		    user: {}
+		  });
 			return
 		}
 		if(!Boolean(user)) {
@@ -113,6 +115,13 @@ exports.loginout = function(req, res) {
 }
 
 exports.changePassword = function(req, res) {
+	if(!Boolean(req.session.user)) {
+		res.render('error', {
+			user: req.session.user? req.session.user : {},
+			err_msg: '登录过期，请重新登录'
+		})
+		return
+	}
 
 	var current_user = req.session.user;
 	var old_password = req.body.old_password
@@ -124,7 +133,13 @@ exports.changePassword = function(req, res) {
 	//签名后的密码
 	var md5_old_password = md5.digest('hex');
 	User.findOne({'username': current_user.username}).exec(function(err, user) {
-		if(err) return console.log(err);
+		if(err) {
+			res.render('error', {
+		    err_msg: '查找用户失败'+err,
+		    user: {}
+		  });
+			return
+		}
 		if(user.password != md5_old_password) {
 			res.render('account', {
 				user: req.session.user? req.session.user : {username: ''},
@@ -146,7 +161,13 @@ exports.changePassword = function(req, res) {
 		var md5_new_password = md5.digest('hex');
 		user.password = md5_new_password
 		User.update({'_id': user._id}, user).exec(function(err) {
-			if(err) return console.log(err)
+			if(err) {
+				res.render('error', {
+			    err_msg: '更新用户失败'+err,
+			    user: {}
+			  });
+			  return
+			}			
 			res.render('account', {
 				user: req.session.user? req.session.user : {username: ''},
 				account_msg: '修改成功'
@@ -157,20 +178,35 @@ exports.changePassword = function(req, res) {
 }
 
 exports.updateSubPageContent = function(req, res) {
+	if(!Boolean(req.session.user)) {
+		res.render('error', {
+			user: req.session.user? req.session.user : {},
+			err_msg: '登录过期，请重新登录'
+		})
+		return
+	}
+
 	var current_page = req.body.current_page
 	var content = req.body.content
 	
 	SubPage.findOne({'title': current_page}).exec(function(err, subpage) {
 		// 却少错误处理
+		if(err) {
+			res.render('error', {
+		    err_msg: '查找子页面失败'+err,
+		    user: {}
+		  });
+			return
+		}
 		if(Boolean(subpage)) {
 			subpage.content = content
 			SubPage.update({'title': subpage.title}, subpage).exec(function(err) {
 				if(err) {
-					return res.render('subpage_ueditor', {
-						user: req.session.user? req.session.user : {},
-						subPage: subpage,
-						msg: '修改出错'
-					})
+					res.render('error', {
+				    err_msg: '更新子页面失败'+err,
+				    user: {}
+				  });
+					return
 				}
 				res.render('subpage_ueditor', {
 					user: req.session.user? req.session.user : {username: ''},
@@ -186,11 +222,11 @@ exports.updateSubPageContent = function(req, res) {
 			subPage.content = content
 			subPage.save(function(err) {
 				if(err) {
-					return res.render('subpage_ueditor', {
-						user: req.session.user? req.session.user : {username: ''},
-						subPage: subPage,
-						msg: '修改出错'
-					})
+					res.render('error', {
+				    err_msg: '保存子页面失败'+err,
+				    user: {}
+				  });
+					return
 				}
 				res.render('subpage_ueditor', {
 					user: req.session.user? req.session.user : {username: ''},
@@ -203,10 +239,188 @@ exports.updateSubPageContent = function(req, res) {
 }
 
 exports.upload_project = function(req, res) {
-	console.dir(req.files);
-	res.render('project_ueditor', {
+	if(!Boolean(req.session.user)) {
+		res.render('error', {
+			user: req.session.user? req.session.user : {},
+			err_msg: '登录过期，请重新登录'
+		})
+		return
+	}
+	
+	var name = req.body.name
+	var intro = req.body.intro
+
+	var file_obj = req.files.pics;
+  var file_obj2 = [];
+  var pics = '';
+  for(var i=0;i<file_obj.length;i++){
+      if(file_obj[i].name){
+          file_obj2.push(file_obj[i]);
+      }
+  }
+  //图片路径们
+  var imgs = [];
+  var length = file_obj2.length;
+  if(length == 0) {
+  	console.log(name)
+  	return res.render('project_ueditor', {
+			user: req.session.user? req.session.user : {},
+			msg: '图片不能为空，上传失败',
+			pro_name: name,
+			pro_intro: intro
+		})
+  }
+  var uploadStatus = false;
+  if(length>0){
+    file_obj2.forEach(function(item,index){
+      if(item.path) {
+	      var tmpPath = item.path;
+	      var type = item.type;
+	      var extension_name = "";
+	      //移动到指定的目录，一般放到public的images文件下面
+	      //在移动的时候确定路径已经存在，否则会报错
+	      var tmp_name = (Date.parse(new Date())/1000);
+	      tmp_name = tmp_name+''+(Math.round(Math.random()*9999));
+	      //判断文件类型
+        switch (type) {
+          case 'image/pjpeg':extension_name = 'jpg';
+            break;
+          case 'image/jpeg':extension_name = 'jpg';
+            break;
+          case 'image/gif':extension_name = 'gif';
+            break;
+          case 'image/png':extension_name = 'png';
+            break;
+          case 'image/x-png':extension_name = 'png';
+            break;
+          case 'image/bmp':extension_name = 'bmp';
+            break;
+        }
+        var tmp_name = tmp_name+'.'+extension_name;
+        var targetPath = './public/img/pro_img/' + tmp_name;
+        
+        // console.log(tmpPath);
+        //将上传的临时文件移动到指定的目录下
+        fs.rename(tmpPath, targetPath , function(err) {
+          if(err){
+            res.render('error', {
+					    err_msg: '移动文件失败'+err,
+					    user: {}
+					  });
+          }
+          if(pics){
+              pics += ','+tmp_name;
+          }else{
+              pics += tmp_name;
+          }
+          //判断是否完成
+          // console.log(index);
+           //删除临时文件
+          fs.unlink(tmpPath, function(){
+            if(err) {
+              res.render('error', {
+						    err_msg: '删除文件失败'+err,
+						    user: {}
+						  });
+            }
+            else{
+            	var src = '/img/pro_img/' + tmp_name;
+            	imgs.push(src);
+            	//上传完成，保存进数据库
+            	if(index+1 == length) {
+            		Project.findOne({'name': name}).exec(function(err, the_pro) {
+            			if(err) {
+            				res.render('error', {
+									    err_msg: '查找项目失败'+err,
+									    user: {}
+									  });
+            			}
+            			//数据库中不存在该项目，操作为新增
+            			if(!Boolean(the_pro)) {
+            				var project = new Project()
+										project.name = name
+										project.intro = intro
+										project.imgs = imgs
+										project.save(function(err) {
+											if(err) {
+												res.render('error', {
+											    err_msg: '保存项目失败'+err,
+											    user: {}
+											  });
+											} 
+											res.render('project_ueditor', {
+												user: req.session.user? req.session.user : {},
+												msg: '上传成功',
+												pro_name: name,
+												pro_intro: intro
+											})
+											return
+										})
+            			}
+            			//数据库中存在该项目，更新
+            			else {
+            				the_pro.intro = intro
+            				the_pro.imgs = imgs;
+            				Project.update({'name': name}, the_pro).exec(function(err) {
+            					if(err) {
+            						res.render('error', {
+											    err_msg: '更新项目失败'+err,
+											    user: {}
+											  });
+            					};
+            					res.render('project_ueditor', {
+												user: req.session.user? req.session.user : {},
+												msg: '上传成功',
+												pro_name: name,
+												pro_intro: intro
+											})
+											return
+            				})
+            			}
+            		})		
+            	}
+        		}
+      		})
+	      })
+	    }
+    })
+  }
+}
+
+exports.del_project = function(req, res) {
+	if(!Boolean(req.session.user.username)) {
+		res.render('error', {
+			user: req.session.user? req.session.user : {},
+			err_msg: '你没有权限'
+		})
+		return
+	}
+	var name = req.query.name
+	console.log(name)
+	Project.findOne({'name': name}).exec(function(err, project) {
+		if(err) {
+			res.render('error', {
 				user: req.session.user? req.session.user : {},
-				msg: ''
+				err_msg: '查找项目失败'
 			})
 			return
+		}
+		if(!Boolean(project)) {
+			res.render('error', {
+				user: req.session.user? req.session.user : {},
+				err_msg: '项目不存在'
+			})
+			return
+		}
+		Project.remove({'name': name}).exec(function(err, del_pro) {
+			if(err) {
+				res.render('error', {
+					user: req.session.user? req.session.user : {},
+					err_msg: '删除失败'
+				})
+				return
+			}
+			res.redirect('/project')
+		})
+	})
 }

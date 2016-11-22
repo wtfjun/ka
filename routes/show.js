@@ -12,5 +12,6 @@ router.get('/subpage_ueditor', show.subpage_ueditor)
 router.get('/message', show.message)
 router.get('/project', show.project)
 router.get('/project_ueditor', show.project_ueditor)
+router.get('/error', show.errorPage)
 
 module.exports = router;

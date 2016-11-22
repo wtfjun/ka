@@ -1,5 +1,6 @@
 var SubPage = require('../models').SubPage
 var Message = require('../models').Message
+var Project = require('../models').Project
 
 exports.subpage = function(req, res) {
 	var title = req.query.title
@@ -32,6 +33,54 @@ exports.message = function(req, res) {
 		}
 		res.jsonp({
 			status: 'success'
+		})
+	})
+}
+
+exports.fourProjects = function(req, res) {
+	Project.find({}).limit(4).exec(function(err, projects) {
+		if(err) {
+			res.jsonp({
+				status: 'fail'
+			})
+			return
+		}
+		res.jsonp({
+			status: 'success',
+			projects: projects
+		})
+	})
+}
+
+exports.allProjects = function(req, res) {
+	Project.find({}).exec(function(err, projects) {
+		if(err) {
+			res.jsonp({
+				status: 'fail'
+			})
+			return
+		}
+		res.jsonp({
+			status: 'success',
+			projects: projects
+		})
+	})
+}
+
+exports.project = function(req, res) {
+	var name = req.query.name
+	console.log(name)
+	Project.findOne({'name': name}).exec(function(err, project) {
+		if(err) {
+			res.jsonp({
+				status: 'fail'
+			})
+			return
+		}
+		console.log(project)
+		res.jsonp({
+			status: 'success',
+			project: project
 		})
 	})
 }

@@ -1,4 +1,23 @@
-			
+			<style>
+				.subpage-cont {
+					height: 200px;
+					overflow: hidden;
+				}
+				.subpage-cont img {
+					width: 100%!important;
+				}
+				.subpage-cont table {
+					width: 100%!important;
+				}
+				.subpage-cont a {
+					padding: 0!important;
+					width: 100%!important;
+				}
+				.widget-content>a {
+					width: 100%!important;
+					padding-left: 0!important;
+				}
+			</style>
 			<div class="span9">
 				
 				<h1 class="page-title">
@@ -7,19 +26,19 @@
 				</h1>
 				
 				
+				<% for(var i=0;i<subpages.length;i++) { %>
 				<div class="row">
 					
-					<a class="span9" href="/subpage_ueditor?page=cyprus">
+					<a class="span9" href="/subpage_ueditor?page=<%= subpages[i].title %>">
 				
 						<div class="widget">
 									
 							<div class="widget-content">
 								
-								<h3>CYPRUS</h3>
+								<h3><%= subpages[i].title %></h3>
 								
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+								<div class="subpage-cont"><%- subpages[i].content %></div>
 								
-								<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 							</div> <!-- /widget-content -->
 							
 						</div> <!-- /widget -->
@@ -27,151 +46,8 @@
 					</a> <!-- /span9 -->
 					
 				</div> <!-- /row -->
+				<% } %>
 				
-				
-				
-				
-				<div class="row">
-					
-					<a class="span5" href="/subpage_ueditor?page=financing">
-				
-						<div class="widget">
-								
-							<div class="widget-content">
-								
-								<h3>FINANCING</h3>
-								
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-								
-								<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-							</div> <!-- /widget-content -->
-							
-						</div> <!-- /widget -->
-						
-					</a> <!-- /span5 -->
-					
-					
-					
-					<a class="span4" href="/subpage_ueditor?page=Buying Process">
-				
-						<div class="widget">
-																
-							<div class="widget-content">
-								
-								<h3>Buying Process</h3>
-								
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-								
-								<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-							</div> <!-- /widget-content -->
-							
-						</div> <!-- /widget -->
-						
-					</a> <!-- /span4 -->
-					
-				</div> <!-- /row -->
-					
-				
-				
-				
-				<div class="row">
-					
-					<a class="span3" href="/subpage_ueditor?page=PERMANENT RESIDENCY">
-				
-						<div class="widget">
-																							
-							<div class="widget-content">
-								
-								<h3>PERMANENT RESIDENCY</h3>
-								
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-								
-								<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-							</div> <!-- /widget-content -->
-							
-						</div> <!-- /widget -->
-						
-					</a> <!-- /span3 -->
-					
-					
-					<a class="span3" href="/subpage_ueditor?page=PASSPORT PROGRAM">
-				
-						<div class="widget">
-							
-																
-							<div class="widget-content">
-								
-								<h3>PASSPORT PROGRAM</h3>
-								
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-								
-								<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-							</div> <!-- /widget-content -->
-							
-						</div> <!-- /widget -->
-						
-					</a> <!-- /span3 -->
-					
-					
-					<a class="span3" href="/subpage_ueditor?page=KARMA">
-				
-						<div class="widget">
-																							
-							<div class="widget-content">
-								
-								<h3>KARMA</h3>
-								
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-								
-								<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-							</div> <!-- /widget-content -->
-							
-						</div> <!-- /widget -->
-						
-					</a> <!-- /span3 -->
-					
-				</div> <!-- /row -->
-				
-				
-				
-				
-				<div class="row">
-					
-					<div class="span6">
-				
-						<div class="widget">
-																
-							<div class="widget-content">
-								
-								<h3>6 Columns</h3>
-								
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-								
-								<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-							</div> <!-- /widget-content -->
-							
-						</div> <!-- /widget -->
-						
-					</div> <!-- /span5 -->
-					
-					
-					
-					<div class="span3">
-				
-						<div class="widget">
-																
-							<div class="widget-content">
-								
-								<h3>3 Columns</h3>
-								
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
-							</div> <!-- /widget-content -->
-							
-						</div> <!-- /widget -->
-						
-					</div> <!-- /span4 -->
-					
-				</div> <!-- /row -->
 				
 				
 				

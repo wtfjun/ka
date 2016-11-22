@@ -1,5 +1,6 @@
 var SubPage = require('../models').SubPage
 var Message = require('../models').Message
+var Project = require('../models').Project
 
 exports.index = function(req, res) {
 	if(!Boolean(req.session.user)) {
@@ -43,9 +44,19 @@ exports.subpage = function(req, res) {
 		res.redirect('/login')
 		return
 	}
-	res.render('subpage', {
-		user: req.session.user? req.session.user : {},
+	SubPage.find({}).exec(function(err, subpages) {
+		if(err) {
+			res.render('error', {
+				err_msg: '查找子页面失败'+err,
+				user:{}
+			})
+		}
+		res.render('subpage', {
+			user: req.session.user? req.session.user : {},
+			subpages: subpages
+		})
 	})
+	
 }
 
 exports.subpage_ueditor = function(req, res) {
@@ -56,11 +67,11 @@ exports.subpage_ueditor = function(req, res) {
 	var current_page = req.query.page;
 	SubPage.findOne({'title': current_page}).exec(function(err, subpage) {
 		if(err) {
-			return res.render('subpage_ueditor', {
-				user: req.session.user? req.session.user : {},
-				err_msg: err,
-				current_page: current_page
-			})
+			res.render('error', {
+		    err_msg: '查找子页面失败'+err,
+		    user: {}
+		  });
+			return
 		}
 		if(Boolean(subpage)) {
 			res.render('subpage_ueditor', {
@@ -75,7 +86,13 @@ exports.subpage_ueditor = function(req, res) {
 			subpage.title = current_page
 			subpage.content = '1111111'
 			subpage.save(function(err) {
-				// if(err)
+				if(err) {
+					res.render('error', {
+				    err_msg: '保存子页面失败'+err,
+				    user: {}
+				  });
+					return
+				}
 				res.render('subpage_ueditor', {
 					user: req.session.user? req.session.user : {},
 					subPage: subpage,
@@ -92,7 +109,13 @@ exports.message = function(req, res) {
 		return
 	}
 	Message.find({}).exec(function(err, messages){
-		// if(err)
+		if(err) {
+			res.render('error', {
+		    err_msg: '查找留言失败'+err,
+		    user: {}
+		  });
+			return
+		}
 		res.render('message', {
 			user: req.session.user? req.session.user : {},
 			messages: messages
@@ -105,12 +128,19 @@ exports.project = function(req, res) {
 		res.redirect('/login')
 		return
 	}
-	Message.find({}).exec(function(err, messages){
-		// if(err)
+	Project.find({}).exec(function(err, projects){
+		if(err) {
+			res.render('error', {
+		    err_msg: '查找项目失败'+err,
+		    user: {}
+		  });
+			return
+		}
 		res.render('project', {
 			user: req.session.user? req.session.user : {},
-			messages: messages
+			projects: projects
 		})
+		return
 	})
 }
 
@@ -119,14 +149,51 @@ exports.project_ueditor = function(req, res) {
 		res.redirect('/login')
 		return
 	}
-	var pro_name = req.query.pro_name
+
+	var pro_name = req.query.pro_name? req.query.pro_name: ''
+	//参数不存在
 	if(!Boolean(pro_name)) {
-		
+		res.render('project_ueditor', {
+			user: req.session.user? req.session.user : {},
+			msg: '',
+			pro_name: '',
+			pro_intro: ''
+		})
+		return
 	}
-	
+	Project.findOne({'name': pro_name}).exec(function(err, project) {
+		if(err) {
+			res.render('error', {
+		    err_msg: '查找项目失败'+err,
+		    user: {}
+		  });
+			return
+		}
+		//找不到项目
+		if(Boolean(project)) {
+			console.log(project)
 			res.render('project_ueditor', {
 				user: req.session.user? req.session.user : {},
-				msg: ''
+				msg: '',
+				pro_name: project.name,
+				pro_intro: project.intro
 			})
 			return
+		}
+		res.render('project_ueditor', {
+			user: req.session.user? req.session.user : {},
+			msg: '',
+			pro_name: '',
+			pro_intro: ''
+		})
+		return
+	})
+
+}
+
+exports.errorPage = function(req, res) {
+	res.render('error', {
+		user: req.session.user? req.session.user : {},
+		err_msg: '错误页面'
+	})
 }

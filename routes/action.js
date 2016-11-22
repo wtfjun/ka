@@ -15,4 +15,5 @@ router.get('/loginout', action.loginout)//登出
 router.post('/changePassword', action.changePassword)//修改密码
 router.post('/updateSubPageContent', action.updateSubPageContent)//
 router.post('/upload_project', multipartMiddleware, action.upload_project)//
+router.get('/del_project', action.del_project)
 module.exports = router;

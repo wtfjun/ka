@@ -92,7 +92,9 @@ if (app.get('env') === 'development') {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
-      error: err
+      error: err,
+      err_msg: err.message,
+      user: {}
     });
   });
 }
@@ -103,7 +105,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
-    error: {}
+    error: {},
+    err_msg: err.message,
+    user: {}
   });
 });
 

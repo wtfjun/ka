@@ -9,38 +9,49 @@
     
     <h1 class="page-title">
         <!-- <i class="icon-th-large"></i> -->
-        <span>项目编辑</span> 页面  
-        <span class="btn btn-default pull-right" style="margin-top: 3px" onclick="setContent()"> 重置原内容</span>             
+        <span>项目编辑</span> 页面               
     </h1>
     
     
     <div class="row">
         
         <div class="span9">
-						<form method="post" action="/action/upload_project" enctype="multipart/form-data">
-						    <table>
-						        <tr>
-						            <td>名称：</td><td><input type="text" name="x" id="x" /></td>
-						        </tr>
-						        <tr>
-						            <td>图片：</td>
-						            <td id="upload_box">
-						            	<div class="upload_item" index="1">
-						            		<span class="upload_item_add" onclick="ADD.upload_click(this)">+</span>
-						            		<input type="file" name="pics" id="pics" class="upload_input" onchange="ADD.upload_change(this)" />
-						            	</div>
-						            </td>
-						        </tr>
+			<form method="post" action="/action/upload_project" enctype="multipart/form-data">
+			    <table style="width: 100%">
+                    <tr><%= msg %></tr>
+			        <tr>
+                        <% if(!Boolean(pro_name)) {%>
+                        <td>名称：<input type="text" name="name" id="name" /></td>
+                        <% } %>
 
-						        <td>介绍：</td><td><input type="text" name="x" id="x" /></td>
-						    </table>
+                        <% if(Boolean(pro_name)) {%>
+                        <td>名称：<%= pro_name %>
+                        <input style="display:none" type="text" name="name" id="name" value="<%= pro_name %>" /></td>
+                        <% } %>
+
+			        </tr>
+			        <tr style="height: 100px;">
+			            <td id="upload_box">
+                            <span style="float: left">图片：</span>
+			            	<div class="upload_item" index="1">
+			            		<span class="upload_item_add" onclick="ADD.upload_click(this)">+</span>
+			            		<input type="file" name="pics" id="pics" class="upload_input" onchange="ADD.upload_change(this)" />
+			            	</div>
+			            </td>
+			        </tr>
+                    <tr>
+                        <td>
+                            介绍：
+                            <textarea rows="6" style="width: 100%" type="text" name="intro" id="intro"><%= pro_intro %></textarea>
+                        </td>
+                    </tr>
+			    </table>
 						
-		            <div class="form-actions" style="text-align: center;">
-		                <button type="submit" class="btn btn-primary">确定</button>
-		                <button class="btn btn-default">取消</button>
-		            </div>
-						</form>
-            </div> <!-- /widget -->
+	            <div class="form-actions" style="text-align: center;">
+	                <button type="submit" class="btn btn-primary">确定</button>
+	                <button class="btn btn-default">取消</button>
+	            </div>
+			</form>           
             
         </div> <!-- /span9 -->
         

@@ -19,27 +19,30 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Name</th>
-									<th>Email</th>
-									<th>subject</th>
-									<th>message</th>
+									<th>name</th>
+									<th>intro</th>
+									<th>imgs</th>
+									<th>actions</th>
 									<!-- <th>&nbsp;</th> -->
 								</tr>
 							</thead>
 							
 							<tbody>
-								<% for(var i=0;i<messages.length;i++) { %>
+								<% for(var i=0;i<projects.length;i++) { %>
 								<tr>
 									<td><%= i+1 %></td>
-									<td><%= messages[i].name %></td>
-									<td><%= messages[i].email %></td>
-									<td><%= messages[i].subject %></td>
-									<td><%= messages[i].message %></td>
+									<td><%= projects[i].name %></td>
+									<td><%= projects[i].intro.slice(0,200) %></td>
+									<td style="width: 200px;">
+										<% for(var j=0;j<projects[i].imgs.length;j++) { %>
+										<img style="width:50px;height:50px;float:left;margin-right:5px;margin-bottom: 5px;" src="<%= projects[i].imgs[j] %>" />
+										<% } %>
+									</td>
 									<td class="action-td">
-										<a href="javascript:;" class="btn btn-small btn-warning">
+										<a href="/project_ueditor?pro_name=<%= projects[i].name %>" class="btn btn-small btn-warning">
 											<i class="icon-edit"></i>								
 										</a>					
-										<a href="javascript:;" class="btn btn-small">
+										<a href="/action/del_project?name=<%= projects[i].name %>" class="btn btn-small">
 											<i class="icon-remove"></i>						
 										</a>
 									</td>
