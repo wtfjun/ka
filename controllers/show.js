@@ -116,6 +116,7 @@ exports.message = function(req, res) {
 		  });
 			return
 		}
+		console.log(messages)
 		res.render('message', {
 			user: req.session.user? req.session.user : {},
 			messages: messages
