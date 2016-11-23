@@ -24,6 +24,7 @@ exports.message = function(req, res) {
 	a_message.email = email
 	a_message.subject = subject
 	a_message.message = message
+	console.log(a_message)
 	a_message.save(function(err) {
 		if(err) {
 			res.jsonp({
