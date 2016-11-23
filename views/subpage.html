@@ -28,7 +28,7 @@
 				
 				<% for(var i=0;i<subpages.length;i++) { %>
 				<div class="row">
-					
+					<a href="/action/del_subpage?_id=<%= subpages[i]._id %>" class="btn pull-right">删除</a>
 					<a class="span9" href="/subpage_ueditor?page=<%= subpages[i].title %>">
 				
 						<div class="widget">
@@ -46,6 +46,7 @@
 					</a> <!-- /span9 -->
 					
 				</div> <!-- /row -->
+
 				<% } %>
 				
 				

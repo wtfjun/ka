@@ -238,6 +238,39 @@ exports.updateSubPageContent = function(req, res) {
 	})
 }
 
+exports.del_subpage = function(req, res) {
+	if(!Boolean(req.session.user)) {
+		res.render('error', {
+			user: req.session.user? req.session.user : {},
+			err_msg: '登录过期，请重新登录'
+		})
+		return
+	}
+
+	var _id = req.query._id
+	SubPage.remove({'_id': _id}).exec(function(err, subject) {
+		if(err ) {
+			res.render('error', {
+		    err_msg: '删除子页面失败'+err,
+		    user: {}
+		  });
+			return
+		}
+		SubPage.find({}).exec(function(err, subpages) {
+			if(err) {
+				res.render('error', {
+					err_msg: '查找子页面失败'+err,
+					user:{}
+				})
+			}
+			res.render('subpage', {
+				user: req.session.user? req.session.user : {},
+				subpages: subpages
+			})
+		})
+	})
+}
+
 exports.upload_project = function(req, res) {
 	if(!Boolean(req.session.user)) {
 		res.render('error', {
