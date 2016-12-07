@@ -145,6 +145,19 @@ exports.project = function(req, res) {
 	})
 }
 
+exports.project_add = function(req, res) {
+	if(!Boolean(req.session.user)) {
+		res.redirect('/login')
+		return
+	}
+
+	res.render('project_add', {
+		user: req.session.user? req.session.user : {},
+		msg: ''
+	})
+	return
+}
+
 exports.project_ueditor = function(req, res) {
 	if(!Boolean(req.session.user)) {
 		res.redirect('/login')
@@ -152,16 +165,7 @@ exports.project_ueditor = function(req, res) {
 	}
 
 	var pro_name = req.query.pro_name? req.query.pro_name: ''
-	//参数不存在
-	if(!Boolean(pro_name)) {
-		res.render('project_ueditor', {
-			user: req.session.user? req.session.user : {},
-			msg: '',
-			pro_name: '',
-			pro_intro: ''
-		})
-		return
-	}
+
 	Project.findOne({'name': pro_name}).exec(function(err, project) {
 		if(err) {
 			res.render('error', {
@@ -170,27 +174,18 @@ exports.project_ueditor = function(req, res) {
 		  });
 			return
 		}
-		//找不到项目
-		if(Boolean(project)) {
-			console.log(project)
-			res.render('project_ueditor', {
-				user: req.session.user? req.session.user : {},
-				msg: '',
-				pro_name: project.name,
-				pro_intro: project.intro
-			})
-			return
-		}
 		res.render('project_ueditor', {
 			user: req.session.user? req.session.user : {},
 			msg: '',
-			pro_name: '',
-			pro_intro: ''
+			pro_name: project.name,
+			pro_intro: project.intro
 		})
 		return
 	})
 
 }
+
+
 
 exports.errorPage = function(req, res) {
 	res.render('error', {

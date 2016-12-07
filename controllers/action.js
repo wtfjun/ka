@@ -271,7 +271,7 @@ exports.del_subpage = function(req, res) {
 	})
 }
 
-exports.upload_project = function(req, res) {
+exports.add_project = function(req, res) {
 	if(!Boolean(req.session.user)) {
 		res.render('error', {
 			user: req.session.user? req.session.user : {},
@@ -295,8 +295,8 @@ exports.upload_project = function(req, res) {
   var imgs = [];
   var length = file_obj2.length;
   if(length == 0) {
-  	console.log(name)
-  	return res.render('project_ueditor', {
+  	// console.log(name)
+  	return res.render('project_add', {
 			user: req.session.user? req.session.user : {},
 			msg: '图片不能为空，上传失败',
 			pro_name: name,
@@ -381,7 +381,7 @@ exports.upload_project = function(req, res) {
 											    user: {}
 											  });
 											} 
-											res.render('project_ueditor', {
+											res.render('project_add', {
 												user: req.session.user? req.session.user : {},
 												msg: '上传成功',
 												pro_name: name,
@@ -401,7 +401,7 @@ exports.upload_project = function(req, res) {
 											    user: {}
 											  });
             					};
-            					res.render('project_ueditor', {
+            					res.render('project_add', {
 												user: req.session.user? req.session.user : {},
 												msg: '上传成功',
 												pro_name: name,
@@ -418,6 +418,44 @@ exports.upload_project = function(req, res) {
 	    }
     })
   }
+}
+exports.upload_project = function(req, res) {
+	if(!Boolean(req.session.user)) {
+		res.render('error', {
+			user: req.session.user? req.session.user : {},
+			err_msg: '登录过期，请重新登录'
+		})
+		return
+	}
+	
+	var name = req.body.name
+	var intro = req.body.intro
+
+	Project.findOne({'name': name}).exec(function(err, the_pro) {
+		if(err) {
+			res.render('error', {
+		    err_msg: '查找项目失败'+err,
+		    user: {}
+		  });
+		}
+	
+		the_pro.intro = intro
+		Project.update({'name': name}, the_pro).exec(function(err) {
+			if(err) {
+				res.render('error', {
+			    err_msg: '更新项目失败'+err,
+			    user: {}
+			  });
+			};
+			res.render('project_ueditor', {
+				user: req.session.user? req.session.user : {},
+				msg: '上传成功',
+				pro_name: name,
+				pro_intro: intro
+			})
+			return
+		})
+	})		
 }
 
 exports.del_project = function(req, res) {

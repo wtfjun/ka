@@ -16,21 +16,14 @@
     <div class="row">
         
         <div class="span9">
-			<form method="post" action="/action/upload_project" enctype="multipart/form-data">
+			<form method="post" action="/action/add_project" enctype="multipart/form-data">
 			    <table style="width: 100%">
                     <tr><%= msg %></tr>
 			        <tr>
-                        <% if(!Boolean(pro_name)) {%>
                         <td>名称：<input type="text" name="name" id="name" /></td>
-                        <% } %>
-
-                        <% if(Boolean(pro_name)) {%>
-                        <td>名称：<%= pro_name %>
-                        <input style="display:none" type="text" name="name" id="name" value="<%= pro_name %>" /></td>
-                        <% } %>
 
 			        </tr>
-<!-- 			        <tr style="height: 100px;">
+			        <tr style="height: 100px;">
 			            <td id="upload_box">
                             <span style="float: left">图片：</span>
 			            	<div class="upload_item" index="1">
@@ -38,11 +31,11 @@
 			            		<input type="file" name="pics" id="pics" class="upload_input" onchange="ADD.upload_change(this)" />
 			            	</div>
 			            </td>
-			        </tr> -->
+			        </tr>
                     <tr>
                         <td>
                             介绍：
-                            <textarea rows="6" style="width: 100%" type="text" name="intro" id="intro"><%= pro_intro %></textarea>
+                            <textarea rows="6" style="width: 100%" type="text" name="intro" id="intro"></textarea>
                         </td>
                     </tr>
 			    </table>
