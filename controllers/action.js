@@ -218,7 +218,7 @@ exports.updateSubPageContent = function(req, res) {
 					}
 					res.render('subpage_ueditor', {
 						user: req.session.user? req.session.user : {username: ''},
-						subPage: subpage,
+						subPage: the_sub,
 						msg: '修改成功'
 					})
 				return
