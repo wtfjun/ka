@@ -32,7 +32,6 @@
                             function getContent() {
                                 var current_page = $('.page-title>span').html()
                                 var content = ue.getContent()
-                               
                                 $.ajax({
                                     url: '/action/updateSubPageContent',
                                     type: 'post',
@@ -42,7 +41,15 @@
                                         content: content
                                     },
                                 })
-                                history.go(0)
+                                .done(function() {
+                                    console.log("success");
+                                })
+                                .always(function() {
+                                    history.go(0)
+                                });
+                                
+                                
+                                
                             }  
                         </script>  
                         <div class="form-actions" style="text-align: center;">
