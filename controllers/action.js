@@ -208,13 +208,23 @@ exports.updateSubPageContent = function(req, res) {
 				  });
 					return
 				}
-				res.render('subpage_ueditor', {
-					user: req.session.user? req.session.user : {username: ''},
-					subPage: subpage,
-					msg: '修改成功'
-				})
+				SubPage.findOne({'title': current_page}).exec(function(err, the_sub) {
+					if(err) {
+						res.render('error', {
+					    err_msg: '查找子页面失败'+err,
+					    user: {}
+					  });
+						return
+					}
+					res.render('subpage_ueditor', {
+						user: req.session.user? req.session.user : {username: ''},
+						subPage: subpage,
+						msg: '修改成功'
+					})
 				return
+				})
 			})
+			return
 		}
 		else {
 			var subPage = new SubPage()
