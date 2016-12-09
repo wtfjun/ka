@@ -188,6 +188,7 @@ exports.updateSubPageContent = function(req, res) {
 
 	var current_page = req.body.current_page
 	var content = req.body.content
+	console.log(content)
 	
 	SubPage.findOne({'title': current_page}).exec(function(err, subpage) {
 		// 却少错误处理
