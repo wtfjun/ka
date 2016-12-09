@@ -24,10 +24,10 @@
                             var ue = UE.getEditor('ue_container');
                             
                             setTimeout(function() {
-                                ue.setContent('<%- subPage.content %>')
+                                ue.setContent(' <%- subPage.content %> ')
                              }, 500)
                             function setContent() {
-                                ue.setContent('<%- subPage.content %>')
+                                ue.setContent(' <%- subPage.content %> ')
                             }
                             function getContent() {
                                 var current_page = $('.page-title>span').html()
