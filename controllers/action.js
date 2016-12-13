@@ -448,7 +448,6 @@ exports.upload_project = function(req, res) {
 	var name = req.body.name
 	var intro = req.body.intro
 	var more_intro = req.body.more_intro
-
 	var file_obj = req.files.pics;
   var file_obj2 = [];
   var pics = '';
@@ -463,6 +462,7 @@ exports.upload_project = function(req, res) {
   if(length == 0) {
   	Project.findOne({'name': name}).exec(function(err, the_pro) {
 			the_pro.intro = intro
+			the_pro.more_intro = more_intro
 	  	Project.update({'name': name}, the_pro).exec(function(err) {
 				if(err) {
 					res.render('error', {
@@ -562,7 +562,6 @@ exports.upload_project = function(req, res) {
 												    user: {}
 												  });
 	            					};
-	            					console.log(the_pro)
 	            					res.render('project_ueditor', {
 													user: req.session.user? req.session.user : {},
 													msg: '修改成功',
