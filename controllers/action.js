@@ -553,7 +553,8 @@ exports.upload_project = function(req, res) {
 	            			//数据库中存在该项目，更新
 	            				the_pro.intro = intro
 	            				the_pro.more_intro = more_intro
-	            				the_pro.imgs = imgs;
+	            				the_pro.imgs = imgs
+	            				
 	            				Project.update({'name': name}, the_pro).exec(function(err) {
 	            					if(err) {
 	            						res.render('error', {
