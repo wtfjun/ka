@@ -40,11 +40,16 @@
 			            	</div>
 			            </td>
 			        </tr>
+                     <tr>
+                        <td>
+                            简介：
+                            <textarea name="intro" style="width: 100%" id="intro" rows="5"></textarea> 
+                        </td>
+                    </tr>
                     <tr>
                         <td>
-                            介绍：
-                            <!-- 加载编辑器的容器 -->  
-                        <script id="ue_container" style="height: 500px" name="intro" type="text/plain"></script>  
+                            详细介绍：
+                            <script id="ue_container" style="height: 500px" name="more_intro" type="text/plain"></script>  
                         </td>
                     </tr>
 			    </table>
@@ -58,12 +63,12 @@
                         <!-- 实例化编辑器 -->  
                         <script>  
                             var ue = UE.getEditor('ue_container');
-                            
+                            $('#intro').val('<%= pro_intro %>')
                             setTimeout(function() {
-                                ue.setContent('<%- pro_intro %>')
+                                ue.setContent('<%- pro_more_intro %>')
                              }, 500)
                             function setContent() {
-                                ue.setContent('<%- pro_intro %>')
+                                ue.setContent('<%- pro_more_intro %>')
                             }
                         </script>  
                         <div class="form-actions" style="text-align: center;">

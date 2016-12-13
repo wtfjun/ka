@@ -293,6 +293,7 @@ exports.add_project = function(req, res) {
 	
 	var name = req.body.name
 	var intro = req.body.intro
+	var more_intro = req.body.more_intro
 
 	var file_obj = req.files.pics;
   var file_obj2 = [];
@@ -384,6 +385,7 @@ exports.add_project = function(req, res) {
             				var project = new Project()
 										project.name = name
 										project.intro = intro
+										project.more_intro = more_intro
 										project.imgs = imgs
 										project.save(function(err) {
 											if(err) {
@@ -396,7 +398,8 @@ exports.add_project = function(req, res) {
 												user: req.session.user? req.session.user : {},
 												msg: '上传成功',
 												pro_name: name,
-												pro_intro: intro
+												pro_intro: intro,
+												pro_more_intro: more_intro
 											})
 											return
 										})
@@ -404,6 +407,7 @@ exports.add_project = function(req, res) {
             			//数据库中存在该项目，更新
             			else {
             				the_pro.intro = intro
+            				the_pro.more_intro = more_intro
             				the_pro.imgs = imgs;
             				Project.update({'name': name}, the_pro).exec(function(err) {
             					if(err) {
@@ -416,7 +420,8 @@ exports.add_project = function(req, res) {
 												user: req.session.user? req.session.user : {},
 												msg: '上传成功',
 												pro_name: name,
-												pro_intro: intro
+												pro_intro: intro,
+												pro_more_intro: more_intro
 											})
 											return
             				})
@@ -442,6 +447,7 @@ exports.upload_project = function(req, res) {
 	
 	var name = req.body.name
 	var intro = req.body.intro
+	var more_intro = req.body.more_intro
 
 	var file_obj = req.files.pics;
   var file_obj2 = [];
@@ -469,7 +475,8 @@ exports.upload_project = function(req, res) {
 					user: req.session.user? req.session.user : {},
 					msg: '修改成功',
 					pro_name: name,
-					pro_intro: intro
+					pro_intro: intro,
+					pro_more_intro: more_intro
 				})
 			})
   	})
@@ -545,6 +552,7 @@ exports.upload_project = function(req, res) {
 	            		
 	            			//数据库中存在该项目，更新
 	            				the_pro.intro = intro
+	            				the_pro.more_intro = more_intro
 	            				the_pro.imgs = imgs;
 	            				Project.update({'name': name}, the_pro).exec(function(err) {
 	            					if(err) {
@@ -557,7 +565,8 @@ exports.upload_project = function(req, res) {
 													user: req.session.user? req.session.user : {},
 													msg: '修改成功',
 													pro_name: name,
-													pro_intro: intro
+													pro_intro: intro,
+													pro_more_intro: more_intro
 												})
 												return
 	            				})

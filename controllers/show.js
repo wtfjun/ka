@@ -178,7 +178,8 @@ exports.project_ueditor = function(req, res) {
 			user: req.session.user? req.session.user : {},
 			msg: '',
 			pro_name: project.name,
-			pro_intro: project.intro
+			pro_intro: project.intro,
+			pro_more_intro: project.more_intro
 		})
 		return
 	})
