@@ -554,7 +554,7 @@ exports.upload_project = function(req, res) {
 	            				the_pro.intro = intro
 	            				the_pro.more_intro = more_intro
 	            				the_pro.imgs = imgs
-	            				
+
 	            				Project.update({'name': name}, the_pro).exec(function(err) {
 	            					if(err) {
 	            						res.render('error', {
@@ -562,6 +562,7 @@ exports.upload_project = function(req, res) {
 												    user: {}
 												  });
 	            					};
+	            					console.log(the_pro)
 	            					res.render('project_ueditor', {
 													user: req.session.user? req.session.user : {},
 													msg: '修改成功',
