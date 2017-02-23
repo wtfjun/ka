@@ -43,7 +43,7 @@
                      <tr>
                         <td>
                             简介：
-                            <textarea name="intro" style="width: 100%" id="intro" rows="5"></textarea> 
+                            <input name="intro" style="width: 100%" id="intro" value="<%- pro_intro %>" />
                         </td>
                     </tr>
                     <tr>
@@ -63,7 +63,7 @@
                         <!-- 实例化编辑器 -->  
                         <script>  
                             var ue = UE.getEditor('ue_container');
-                            $('#intro').val('<%= pro_intro %>')
+
                             setTimeout(function() {
                                 ue.setContent('<%- pro_more_intro %>')
                              }, 500)
